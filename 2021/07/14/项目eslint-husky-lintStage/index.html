@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yunahome.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="EslintEslint 是在 js 代码中识别和报告模式匹配的工具，他的目标是保证代码的一致性和避免错误。 Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。  yarn add eslint yarn run eslint --init（自动生成.eslintrc 配置文件,）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端项目使用工具规范代码">
+<meta property="og:url" content="https://yunahome.github.io/2021/07/14/%E9%A1%B9%E7%9B%AEeslint-husky-lintStage/index.html">
+<meta property="og:site_name" content="Yuna Blog">
+<meta property="og:description" content="EslintEslint 是在 js 代码中识别和报告模式匹配的工具，他的目标是保证代码的一致性和避免错误。 Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。  yarn add eslint yarn run eslint --init（自动生成.eslintrc 配置文件,）">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-14T00:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-14T12:47:55.583Z">
+<meta property="article:author" content="Yuna">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://yunahome.github.io/2021/07/14/%E9%A1%B9%E7%9B%AEeslint-husky-lintStage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>前端项目使用工具规范代码 | Yuna Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Yuna Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://yunahome.github.io/2021/07/14/%E9%A1%B9%E7%9B%AEeslint-husky-lintStage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Yuna">
+      <meta itemprop="description" content="html, css, js, http, ts 记录 笔记">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yuna Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前端项目使用工具规范代码
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-07-14 00:00:00 / Modified: 12:47:55" itemprop="dateCreated datePublished" datetime="2021-07-14T00:00:00Z">2021-07-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Eslint"><a href="#Eslint" class="headerlink" title="Eslint"></a>Eslint</h1><p><strong><a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/rules/">Eslint</a> 是在 js 代码</strong>中识别和报告模式匹配<strong>的工具</strong>，他的目标是保证代码的一致性和避免错误。</p>
+<p>Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。</p>
+<ol>
+<li><code>yarn add eslint</code></li>
+<li><code>yarn run eslint --init</code>（自动生成.eslintrc 配置文件,）<ul>
+<li>这一步会有几个问题，按照项目需求选择即可</li>
+<li>如安装失败(如还需安装那个插件)，按照失败的提示修改即可</li>
+</ul>
+</li>
+<li>vscode: settings.json 配置。</li>
+<li>eslint 规则 配置到.eslintrc 文件中</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加 settings.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;editor.codeActionsOnSave&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;source.fixAll.eslint&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;eslint.validate&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;react&quot;</span>,</span><br><span class="line">    <span class="string">&quot;html&quot;</span>,</span><br><span class="line">    <span class="string">&quot;javascript&quot;</span>,</span><br><span class="line">    <span class="string">&quot;typescript&quot;</span>,</span><br><span class="line">    <span class="string">&quot;javascriptreact&quot;</span>,</span><br><span class="line">    <span class="string">&quot;typescriptreact&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时，在项目目录 ctrl+shift+p 输入 eslint，确保 eslint 已经启用了，此时保存时 eslint 就可以自动检测代码了，像双引号还可以自动修复为单引号。</p>
+<h1 id="Git-Hooks"><a href="#Git-Hooks" class="headerlink" title="Git Hooks"></a>Git Hooks</h1><p>Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。**<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiaoshou/p/12222665.html">Git Hooks</a> 就是在哪些 git 执行特定事件后触发运行的脚本**。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。</p>
+<p>项目初始化的时候会生成默认钩子(脚本大多是 shell 和 Perl 语言的)，包含大部分可以使用的钩子，但是.sample 扩展名防止他们默认被执行。</p>
+<p>因为 hooks 是本地的，不会 git clone 到仓库，也不会收版本控制影响。</p>
+<h1 id="husky"><a href="#husky" class="headerlink" title="husky"></a>husky</h1><p><a target="_blank" rel="noopener" href="https://typicode.github.io/husky/#/">husky</a> 是一个 git Hook 工具。</p>
+<p>husky 使用 git 的一个新功能 core.hookPath 指定 git hooks 所在的目录而不是使用默认的.git/hooks/。</p>
+<p>使用 husky install 将 git hooks 的目录指定为.husky/。使用 husky add 命令向.husky/中添加 hook。通过这种方式我们就可以只添加我们需要的 git hook，而且所有的脚本都保存在了一个地方（.husky/目录下）因此也就不存在同步文件的问题了。</p>
+<ol>
+<li><p><code>yarn add husky -d</code></p>
+</li>
+<li><p>启用 Git 钩子 <code>npx husky install</code></p>
+</li>
+<li><p>要在安装后自动启用 Git 挂钩，请编辑 package.json</p>
+<p>prepare 脚本会在 npm install（不带参数）之后自动执行。也就是说当我们执行 npm install 安装完项目依赖后会执行 husky install 命令，该命令会创建.husky/目录并指定该目录为 git hooks 所在的目录。</p>
+</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;prepare&quot;</span>: <span class="string">&quot;husky install&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建一个钩子<br>使用 husky add <file> [cmd]（不要忘记 husky install 之前运行）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npx husky add .husky/pre-commit &quot;yarn start&quot;</span><br><span class="line">git add .husky/pre-commit</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_21567385/article/details/116429214">husky 版本区别</a></p>
+<h1 id="lint-staged"><a href="#lint-staged" class="headerlink" title="lint-staged"></a>lint-staged</h1><p><a target="_blank" rel="noopener" href="https://github.com/okonet/lint-staged">lint-staged</a> 仅仅是过滤器(仅过滤 git 暂存文件)，不会帮你格式化任何东西，所以没有代码规则配置文件，需要自己配置一下，如：.eslintrc、.stylelintrc 等，然后在 package.json 中引入。</p>
+<p>当文件变化，我们 git commit 它们，pre-commit 钩子会启动，执行 lint-staged 命令，我们对于 lint-staged 如上文配置，对本次被 commited 中的所有.js 文件，执行 eslint –fix 命令和 git add,命令，前者的的目的是格式化，后者是对格式化之后的代码重新提交。</p>
+<ol>
+<li><code>yarn add lint-staged -d</code></li>
+<li>配置 lint-staged.config.js 文件</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lint-staged.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// 在 git 的待提交的文件中，在 src 目录下的所有 .js .vue 都要执行两条命令。第一条eslint --cache(仅仅检查改变过的文件) 和--fix ，后一条是将处理过的代码重新 add 到 git 中。</span></span><br><span class="line">  <span class="string">&quot;src/**/*.&#123;js,react,typescript,json,ts,tsx&#125;&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;eslint --cache --fix&quot;</span>,</span><br><span class="line">    <span class="string">&quot;git add&quot;</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;src/**/*.&#123;js,css,scss,json,ts,tsx&#125;&quot;</span>: [<span class="string">&quot;git add&quot;</span>],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/10/css/" rel="prev" title="css笔记">
+      <i class="fa fa-chevron-left"></i> css笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Eslint"><span class="nav-number">1.</span> <span class="nav-text">Eslint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Hooks"><span class="nav-number">2.</span> <span class="nav-text">Git Hooks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#husky"><span class="nav-number">3.</span> <span class="nav-text">husky</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lint-staged"><span class="nav-number">4.</span> <span class="nav-text">lint-staged</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Yuna</p>
+  <div class="site-description" itemprop="description">html, css, js, http, ts 记录 笔记</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yuna</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
