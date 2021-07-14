@@ -6,7 +6,7 @@ tags:
 
 # Eslint
 
-**[Eslint](https://eslint.bootcss.com/docs/rules/) 是在 js 代码**中识别和报告模式匹配**的工具**，他的目标是保证代码的一致性和避免错误。
+[Eslint](https://eslint.bootcss.com/docs/rules/) **是在 js 代码**中识别和报告模式匹配**的工具**，他的目标是保证代码的一致性和避免错误。
 
 Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。
 
@@ -38,7 +38,7 @@ Eslint 的主要功能包含代码格式的校验，代码质量的校验，js �
 
 # Git Hooks
 
-Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。**[Git Hooks](https://www.cnblogs.com/jiaoshou/p/12222665.html) 就是在哪些 git 执行特定事件后触发运行的脚本**。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。
+Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。[Git Hooks](https://www.cnblogs.com/jiaoshou/p/12222665.html) **就是在哪些 git 执行特定事件后触发运行的脚本**。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。
 
 项目初始化的时候会生成默认钩子(脚本大多是 shell 和 Perl 语言的)，包含大部分可以使用的钩子，但是.sample 扩展名防止他们默认被执行。
 
@@ -89,11 +89,11 @@ git add .husky/pre-commit
 ```js
 // lint-staged.config.js
 module.exports = {
-  // 在 git 的待提交的文件中，在 src 目录下的所有 .js .vue 都要执行两条命令。第一条eslint --cache(仅仅检查改变过的文件) 和--fix ，后一条是将处理过的代码重新 add 到 git 中。
-  "src/**/*.{js,react,typescript,json,ts,tsx}": [
+  // 在 git 的待提交的文件中，在 src 目录下的所有 js,json,ts,tsx 都要执行两条命令。第一条eslint --cache(仅仅检查改变过的文件) 和--fix ，后一条是将处理过的代码重新 add 到 git 中。
+  "src/**/*.{js,json,ts,tsx}": [
     "eslint --cache --fix",
     "git add",
   ],
-  "src/**/*.{js,css,scss,json,ts,tsx}": ["git add"],
+  "src/**/*.{*}": ["git add"],
 };
 ```
