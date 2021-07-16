@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -17,19 +17,22 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yunahome.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"yunahome.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":3,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="EslintEslint 是在 js 代码中识别和报告模式匹配的工具，他的目标是保证代码的一致性和避免错误。 Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。  yarn add eslint yarn run eslint --init（自动生成.eslintrc 配置文件,）">
+  <meta name="description" content="理解: git hooks 使用: Eslint + Husky + lint-staged  Git HooksGit 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。Git Hooks 就是在哪些 git 执行特定事件后触发运行的脚本。默认情况下 hooks 目录是.git&#x2F;hooks,但是可以通过 core.hookPath 配置变量">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端项目使用工具规范代码">
 <meta property="og:url" content="https://yunahome.github.io/2021/07/14/%E9%A1%B9%E7%9B%AEeslint-husky-lintStage/index.html">
 <meta property="og:site_name" content="Yuna Blog">
-<meta property="og:description" content="EslintEslint 是在 js 代码中识别和报告模式匹配的工具，他的目标是保证代码的一致性和避免错误。 Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。  yarn add eslint yarn run eslint --init（自动生成.eslintrc 配置文件,）">
-<meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-07-14T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-07-14T12:47:55.583Z">
+<meta property="og:description" content="理解: git hooks 使用: Eslint + Husky + lint-staged  Git HooksGit 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。Git Hooks 就是在哪些 git 执行特定事件后触发运行的脚本。默认情况下 hooks 目录是.git&#x2F;hooks,但是可以通过 core.hookPath 配置变量">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-16T02:13:08.068Z">
 <meta property="article:author" content="Yuna">
+<meta property="article:tag" content="eslint">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="husky">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://yunahome.github.io/2021/07/14/%E9%A1%B9%E7%9B%AEeslint-husky-lintStage/">
@@ -41,7 +44,7 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -85,7 +88,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -103,6 +106,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -114,19 +118,56 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -149,13 +190,13 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://yunahome.github.io/2021/07/14/%E9%A1%B9%E7%9B%AEeslint-husky-lintStage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Yuna">
-      <meta itemprop="description" content="html, css, js, http, ts 记录 笔记">
+      <meta itemprop="description" content="html, css, js, http, ts, react, typeScript, git 记录 笔记">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -171,10 +212,18 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="Created: 2021-07-14 00:00:00 / Modified: 12:47:55" itemprop="dateCreated datePublished" datetime="2021-07-14T00:00:00Z">2021-07-14</time>
+              <time title="创建时间：2021-07-14 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-14T00:00:00+08:00">2021-07-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+                </span>
             </span>
 
           
@@ -188,7 +237,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Eslint"><a href="#Eslint" class="headerlink" title="Eslint"></a>Eslint</h1><p><strong><a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/rules/">Eslint</a> 是在 js 代码</strong>中识别和报告模式匹配<strong>的工具</strong>，他的目标是保证代码的一致性和避免错误。</p>
+        <ul>
+<li>理解: git hooks</li>
+<li>使用: Eslint + Husky + lint-staged</li>
+</ul>
+<h1 id="Git-Hooks"><a href="#Git-Hooks" class="headerlink" title="Git Hooks"></a>Git Hooks</h1><p>Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiaoshou/p/12222665.html">Git Hooks</a> <strong>就是在哪些 git 执行特定事件后触发运行的脚本</strong>。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。</p>
+<span id="more"></span> 
+
+<p>项目初始化的时候会生成默认钩子(脚本大多是 shell 和 Perl 语言的)，包含大部分可以使用的钩子，但是.sample 扩展名防止他们默认被执行。</p>
+<p>因为 hooks 是本地的，不会 git clone 到仓库，也不会收版本控制影响。</p>
+<h1 id="Eslint"><a href="#Eslint" class="headerlink" title="Eslint"></a>Eslint</h1><p><a target="_blank" rel="noopener" href="https://eslint.bootcss.com/docs/rules/">Eslint</a> <strong>是在 js 代码</strong>中识别和报告模式匹配<strong>的工具</strong>，他的目标是保证代码的一致性和避免错误。</p>
 <p>Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。</p>
 <ol>
 <li><code>yarn add eslint</code></li>
@@ -197,15 +255,12 @@
 <li>如安装失败(如还需安装那个插件)，按照失败的提示修改即可</li>
 </ul>
 </li>
-<li>vscode: settings.json 配置。</li>
+<li>vscode: settings.json 配置, vscode编辑器中一定要安装eslint插件</li>
 <li>eslint 规则 配置到.eslintrc 文件中</li>
 </ol>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加 settings.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;editor.codeActionsOnSave&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;source.fixAll.eslint&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;eslint.validate&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;react&quot;</span>,</span><br><span class="line">    <span class="string">&quot;html&quot;</span>,</span><br><span class="line">    <span class="string">&quot;javascript&quot;</span>,</span><br><span class="line">    <span class="string">&quot;typescript&quot;</span>,</span><br><span class="line">    <span class="string">&quot;javascriptreact&quot;</span>,</span><br><span class="line">    <span class="string">&quot;typescriptreact&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>此时，在项目目录 ctrl+shift+p 输入 eslint，确保 eslint 已经启用了，此时保存时 eslint 就可以自动检测代码了，像双引号还可以自动修复为单引号。</p>
-<h1 id="Git-Hooks"><a href="#Git-Hooks" class="headerlink" title="Git Hooks"></a>Git Hooks</h1><p>Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。**<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiaoshou/p/12222665.html">Git Hooks</a> 就是在哪些 git 执行特定事件后触发运行的脚本**。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。</p>
-<p>项目初始化的时候会生成默认钩子(脚本大多是 shell 和 Perl 语言的)，包含大部分可以使用的钩子，但是.sample 扩展名防止他们默认被执行。</p>
-<p>因为 hooks 是本地的，不会 git clone 到仓库，也不会收版本控制影响。</p>
 <h1 id="husky"><a href="#husky" class="headerlink" title="husky"></a>husky</h1><p><a target="_blank" rel="noopener" href="https://typicode.github.io/husky/#/">husky</a> 是一个 git Hook 工具。</p>
 <p>husky 使用 git 的一个新功能 core.hookPath 指定 git hooks 所在的目录而不是使用默认的.git/hooks/。</p>
 <p>使用 husky install 将 git hooks 的目录指定为.husky/。使用 husky add 命令向.husky/中添加 hook。通过这种方式我们就可以只添加我们需要的 git hook，而且所有的脚本都保存在了一个地方（.husky/目录下）因此也就不存在同步文件的问题了。</p>
@@ -232,7 +287,7 @@
 <li><code>yarn add lint-staged -d</code></li>
 <li>配置 lint-staged.config.js 文件</li>
 </ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lint-staged.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// 在 git 的待提交的文件中，在 src 目录下的所有 .js .vue 都要执行两条命令。第一条eslint --cache(仅仅检查改变过的文件) 和--fix ，后一条是将处理过的代码重新 add 到 git 中。</span></span><br><span class="line">  <span class="string">&quot;src/**/*.&#123;js,react,typescript,json,ts,tsx&#125;&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;eslint --cache --fix&quot;</span>,</span><br><span class="line">    <span class="string">&quot;git add&quot;</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;src/**/*.&#123;js,css,scss,json,ts,tsx&#125;&quot;</span>: [<span class="string">&quot;git add&quot;</span>],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lint-staged.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// 在 git 的待提交的文件中，在 src 目录下的所有 js,json,ts,tsx 都要执行两条命令。第一条eslint --cache(仅仅检查改变过的文件) 和--fix ，后一条是将处理过的代码重新 add 到 git 中。</span></span><br><span class="line">  <span class="string">&quot;src/**/*.&#123;js,json,ts,tsx&#125;&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;eslint --cache --fix&quot;</span>,</span><br><span class="line">    <span class="string">&quot;git add&quot;</span>,</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;src/**/*.&#123;*&#125;&quot;</span>: [<span class="string">&quot;git add&quot;</span>],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -241,6 +296,11 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/eslint/" rel="tag"># eslint</a>
+              <a href="/tags/git/" rel="tag"># git</a>
+              <a href="/tags/husky/" rel="tag"># husky</a>
+          </div>
 
         
 
@@ -301,23 +361,23 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Eslint"><span class="nav-number">1.</span> <span class="nav-text">Eslint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Hooks"><span class="nav-number">2.</span> <span class="nav-text">Git Hooks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#husky"><span class="nav-number">3.</span> <span class="nav-text">husky</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lint-staged"><span class="nav-number">4.</span> <span class="nav-text">lint-staged</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-Hooks"><span class="nav-number">1.</span> <span class="nav-text">Git Hooks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Eslint"><span class="nav-number">2.</span> <span class="nav-text">Eslint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#husky"><span class="nav-number">3.</span> <span class="nav-text">husky</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#lint-staged"><span class="nav-number">4.</span> <span class="nav-text">lint-staged</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Yuna</p>
-  <div class="site-description" itemprop="description">html, css, js, http, ts 记录 笔记</div>
+  <div class="site-description" itemprop="description">html, css, js, http, ts, react, typeScript, git 记录 笔记</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
@@ -325,8 +385,20 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">4</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -358,7 +430,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Yuna</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
         
@@ -375,6 +447,7 @@
   </div>
 
   
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   <script src="/lib/anime.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
@@ -384,7 +457,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
 <script src="/js/next-boot.js"></script>
@@ -395,6 +468,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
