@@ -1,8 +1,29 @@
 ---
 title: 前端项目使用工具规范代码
 date: 2021-07-14
+categories:
+  - git
 tags: 
+  - eslint
+  - git
+  - husky
 ---
+
++ 理解: git hooks
++ 使用: Eslint + Husky + lint-staged
+
+
+# Git Hooks
+
+Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。[Git Hooks](https://www.cnblogs.com/jiaoshou/p/12222665.html) **就是在哪些 git 执行特定事件后触发运行的脚本**。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。
+
+<!-- more --> 
+
+项目初始化的时候会生成默认钩子(脚本大多是 shell 和 Perl 语言的)，包含大部分可以使用的钩子，但是.sample 扩展名防止他们默认被执行。
+
+因为 hooks 是本地的，不会 git clone 到仓库，也不会收版本控制影响。
+
+
 
 # Eslint
 
@@ -10,11 +31,12 @@ tags:
 
 Eslint 的主要功能包含代码格式的校验，代码质量的校验，js 规范。在实际项目中 Eslint 可以检测出代码问题，并标红，但是并不会自动格式化，需要手动格式化。
 
+
 1. `yarn add eslint`
 2. `yarn run eslint --init`（自动生成.eslintrc 配置文件,）
    - 这一步会有几个问题，按照项目需求选择即可
    - 如安装失败(如还需安装那个插件)，按照失败的提示修改即可
-3. vscode: settings.json 配置。
+3. vscode: settings.json 配置, vscode编辑器中一定要安装eslint插件
 4. eslint 规则 配置到.eslintrc 文件中
 
 ```json
@@ -35,14 +57,6 @@ Eslint 的主要功能包含代码格式的校验，代码质量的校验，js �
 ```
 
 此时，在项目目录 ctrl+shift+p 输入 eslint，确保 eslint 已经启用了，此时保存时 eslint 就可以自动检测代码了，像双引号还可以自动修复为单引号。
-
-# Git Hooks
-
-Git 也具有在特定事件发生之前或之后执行特定脚本代码功能（从概念上类比，就与监听事件、触发器之类的东西类似）。[Git Hooks](https://www.cnblogs.com/jiaoshou/p/12222665.html) **就是在哪些 git 执行特定事件后触发运行的脚本**。默认情况下 hooks 目录是.git/hooks,但是可以通过 core.hookPath 配置变量来更改。
-
-项目初始化的时候会生成默认钩子(脚本大多是 shell 和 Perl 语言的)，包含大部分可以使用的钩子，但是.sample 扩展名防止他们默认被执行。
-
-因为 hooks 是本地的，不会 git clone 到仓库，也不会收版本控制影响。
 
 # husky
 

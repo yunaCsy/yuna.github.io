@@ -1,11 +1,19 @@
 ---
 title: css笔记
 date: 2021-06-10
+updated: 
+comments: true
+categories:
+    - css
+tags:
+    - css
 ---
 
++ html中引入css的方法
++ 布局
++ CSS选择器
 
-[TOC]
-
+<!-- more --> 
 # html中引入css的方法
 行内样式、嵌入式、导入式、 链接式
 
@@ -14,6 +22,7 @@ date: 2021-06-10
 	@import="mystyle.css";
 </style>
 ```
+
 
 **如果仅需要引入一个css文件，则使用链接方式，如果需要多个css文件，则首先用链接方式引入一个"目录"css文件，这个"目录"css文件中在使用导入式引入其他css文件**
 
